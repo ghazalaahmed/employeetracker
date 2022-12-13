@@ -234,43 +234,37 @@ function addRole() {
 }
 
 function viewAllRoles() {
-  connection.query(
-    "Select * from role",
-    function (err, res) {
-      if (err) throw err;
-      console.table(res);
-      start();
-    }
-  );
+  connection.query("Select * from role", function (err, res) {
+    if (err) throw err;
+    console.table(res);
+    start();
+  });
 }
 
 function updateEmployeeRole() {
-  ​connection.query("SELECT first_name, last_name, id FROM employee",
-  function(err,res){
-    let employees = res.map(employee => ({name: employee.first_name + " " + employee.last_name, value: employee.id}))
-  ​
-    inquirer
-    .prompt([
-      {
-        type: "list",
-        name: "employeeName",
-        message: "Which employee's role do you want to update?",
-        choices: employees
-      },
-      {
-        type: "input",
-        name: "role",
-        message: "Which role do you want to assign to the selected employee?"
-      }
-    ])
-    .then (function(res){
-      connection.query(`UPDATE employees SET role_id = ${res.role} WHERE id = ${res.employeeName}`,
-      function (err, res){
-        console.log(res);
-        start()
-      }
-      );
-    })
-  }
-  )
-  }
+  connection.query("Select * from employee", function (err, res) {
+        let employees = res.map(employee => ({name: employee.first_name + " " + employee.last_name, value: employee.id}))
+        inquirer
+        .prompt([
+          {
+            type: "list",
+            name: "employeeName",
+            message: "Which employee's role do you want to update?",
+            choices: employees
+          },
+          {
+            type: "input",
+            name: "role",
+            message: "Which role do you want to assign to the selected employee?"
+          }
+        ])
+        .then (function(res){
+          connection.query(`UPDATE employees SET role_id = ${res.role} WHERE id = ${res.employeeName}`,
+          function (err, res){
+            console.log(res);
+            start()
+          }
+          );
+        })
+  });
+}
